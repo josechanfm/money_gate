@@ -1,26 +1,49 @@
 <script setup>
     import AdminLayout from "@/Layouts/AdminLayout.vue";
     import { Head } from "@inertiajs/inertia-vue3";
-    //import BreezeButton from "@/Components/Button.vue";
     import { Link } from "@inertiajs/inertia-vue3";
     import { useForm } from "@inertiajs/inertia-vue3";
     import { Form } from 'ant-design-vue';
+    import { defineComponent, reactive,ref } from 'vue';
 
-    const props = defineProps({
-        payment: {
-            type: Object,
-            default: () => ({}),
-        },
+    const form = useForm({
+        merchant_id: '',
+        merchantTid: '',
+
     });
-    
-    
-    const form = useForm();
-    
-    const submit = () => {
-        form.post(route("payment_crud.store",form));
+
+    const layout = {
+      labelCol: {
+        span: 8,
+      },
+      wrapperCol: {
+        span: 16,
+      },
+    };
+    const validateMessages = {
+      required: '${label} is required!',
+      types: {
+        email: '${label} is not a valid email!',
+        number: '${label} is not a valid number!',
+      },
+      number: {
+        range: '${label} must be between ${min} and ${max}',
+      },
     };
 
-    </script>
+
+    const onFinish = values => {
+      console.log('Success:', values);
+      //form.post(route("payment.store",form));
+    };
+    const onFinishFailed = errorInfo => {
+      console.log('Failed:', errorInfo);
+    };
+    const onSubmit=()=>{
+      console.log("submit");
+      form.post(route("payment.store",form));
+    }
+</script>
     
     <template>
         <Head title="Payment Create" />
@@ -31,10 +54,32 @@
                     Payment Create
                 </h2>
             </template>
-    
-            <a-form-item label="username" :rules="[{required:true}]">
-                <a-input v-model="form.username"></a-input>
-                <a-input name="b"></a-input>
-            </a-form-item>
+            <a-form
+                :model="form"
+                v-bind="layout"
+                name="nest-messages"
+                :validate-messages="validateMessages"
+                @finish="onFinish"
+            >
+                <a-form-item :name="['merchant_id']" label="Merchant Id" :rules="[{ required: true }]">
+                    <a-input v-model:value="form.merchant_id" />
+                </a-form-item>
+                <a-form-item :name="['merchantTid']" label="Merchant Tid" :rules="[{required: true }]">
+                    <a-input v-model:value="form.merchantTid" />
+                </a-form-item>
+                <a-form-item :name="['merchant_order_id']" label="Merchan order id" :rules="[{required: true }]">
+                    <a-input v-model:value="form.merchant_order_id" />
+                </a-form-item>
+                <a-form-item :name="['merchant_user_id']" label="Merchan user id" :rules="[{required: true }]">
+                    <a-input v-model:value="form.merchant_user_id" />
+                </a-form-item>
+                <a-form-item :name="['amount']" label="Amount">
+                    <a-input v-model:value="form.amount" />
+                </a-form-item>
+                <a-form-item :wrapper-col="{ ...layout.wrapperCol, offset: 8 }">
+                <a-button type="primary" html-type="submit" @click.prevent="onSubmit">Submit</a-button>
+                </a-form-item>
+            </a-form>
+
         </AdminLayout>
     </template>

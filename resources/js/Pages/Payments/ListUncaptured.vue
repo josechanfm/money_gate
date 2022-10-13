@@ -59,20 +59,20 @@
       methods:{
         fetchData:function(){
           this.loading=true;
-          //axios.get('../payment/list_all?page='+page.current+'&pageSize='+page.pageSize+"&sorter="+this.sorter.field+'&order='+this.sorter.order)
+          //axios.get('../payment/table_list?page='+page.current+'&pageSize='+page.pageSize+"&sorter="+this.sorter.field+'&order='+this.sorter.order)
           axios.get('../payment/table_list',{
             params:this.params
           })
             .then(response=>{
               this.dataSource=response.data.data;
-              this.params.total=response.data.total;
+              this.pagination.pageSize=response.data.per_page;
+              this.pagination.total=response.data.total;
+              this.pagination.current=response.data.current_page;
               this.loading=false;
-              console.log(this.activeTab);
-              console.log(this.$parent.activeKey);
-
             })
         },
         handleTableChange: function(pag, filters, sorter){
+          this.params.page=pag.current;
           this.params.pageSize=pag.pageSize;
           this.params.sorter=sorter.order===undefined?'id':sorter.field;
           this.params.order=sorter.order===undefined?'desc':sorter.order=='ascend'?'asc':'desc';
@@ -80,6 +80,5 @@
 
         },
       }
-
     };
   </script>

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use App\Models\Payment;
+use App\Http\Requests\StorePaymentRequest;
 
 class PaymentController extends Controller
 {
@@ -29,5 +30,11 @@ class PaymentController extends Controller
             'Payments/Create'
         );
     }
-
+    public function store(StorePaymentRequest $request)
+    {
+        $paymentApi=new Api\PaymentController;
+        $result=$paymentApi->store($request);
+        return redirect()->route('payment.index')
+            ->with('message','Payment Updated Successful.')->with('result',$result);
+    }
 }

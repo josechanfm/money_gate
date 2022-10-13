@@ -3,8 +3,11 @@
       :dataSource="dataSource" 
       :columns="columns" 
       :pagination="pagination"
+      :loading="loading"
       show-size-changer
+      :customRow="customRow"
       @change="handleTableChange"
+
     />
 </template>
   <script>
@@ -36,21 +39,21 @@
           ],
           pagination:{
             current:1,
-            pageSize:10
+            pageSize:10,
+            total:0
           },
           sorter:{
             field:'id',
             order:'desc'
           },
           params:{
-            total:0,
             page:1,
             pageSize:10,
             sorter:'id',
             order:'asc',
             filter:'all'
           },
-          loading:false
+          loading:false,
         }
       },  
       mounted(){
@@ -65,21 +68,28 @@
           })
             .then(response=>{
               this.dataSource=response.data.data;
-              this.params.total=response.data.total;
+              this.pagination.pageSize=response.data.per_page;
+              this.pagination.total=response.data.total;
+              this.pagination.current=response.data.current_page;
               this.loading=false;
-              console.log(this.activeTab);
-              console.log(this.$parent.activeKey);
-
             })
         },
         handleTableChange: function(pag, filters, sorter){
+          this.params.page=pag.current;
           this.params.pageSize=pag.pageSize;
           this.params.sorter=sorter.order===undefined?'id':sorter.field;
           this.params.order=sorter.order===undefined?'desc':sorter.order=='ascend'?'asc':'desc';
           this.fetchData();
-
+        },
+        customRow(record){
+          return {
+            onClick:(event)=>{
+              console.log(record.id);
+              window.location = 'payment/create';
+              //this.$router.push({path:'payment/create'})
+            }
+          }
         },
       }
-
     };
   </script>

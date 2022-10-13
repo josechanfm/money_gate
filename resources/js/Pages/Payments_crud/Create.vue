@@ -12,13 +12,12 @@
         },
     });
     
-    
     const form = useForm();
     
     const submit = () => {
         form.post(route("payment_crud.store",form));
     };
-    </script>
+</script>
     
     <template>
         <Head title="Blog Create" />
