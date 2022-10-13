@@ -16,7 +16,7 @@ class PaymentSpaController extends Controller
     public function index()
     {
         $data = Payment::paginate(5);
-        return Inertia::render('Payments',['payments'=>$data]);
+        return Inertia::render('Payments_spa',['payments'=>$data]);
     }
 
     /**
@@ -27,7 +27,7 @@ class PaymentSpaController extends Controller
     public function create()
     {
         return Inertia::render(
-            'Payments/Create'
+            'Payments_spa/Create'
         );
     }
 

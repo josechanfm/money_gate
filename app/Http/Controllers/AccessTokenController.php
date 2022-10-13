@@ -125,4 +125,8 @@ class AccessTokenController extends Controller
         //
     }
 
+    public function test(){
+        return response('Hello World');
+    }
+
 }

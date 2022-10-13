@@ -51,9 +51,9 @@ class PaymentController extends Controller
             'currency'=>$request->currency??'MOP',
             'amount'=>$request->amount,
             'timeout'=>$request->timeout??900,
-            'notify_url'=>$request->notify_url,
-            'return_url'=>$request->return_url,
-            'sign'=>$request->sign,
+            'notify_url'=>$request->notify_url??'http://abc.com',
+            'return_url'=>$request->return_url??'http://efg.com',
+            'sign'=>$request->sign??'sign',
             'status'=>$request->status??'START',
             'result'=>"",
         ]);

@@ -1,0 +1,85 @@
+<template>
+  <a-table 
+      :dataSource="dataSource" 
+      :columns="columns" 
+      :pagination="pagination"
+      show-size-changer
+      @change="handleTableChange"
+    />
+</template>
+  <script>
+    export default {
+      setup() {
+      },
+      data(){
+        return{
+          columns: [
+            {
+              title: 'Name',
+              dataIndex: 'merchant_id',
+              key: 'merchant_id',
+              sorter:true
+            },
+            {
+              title: 'Age',
+              dataIndex: 'merchantTid',
+              key: 'merchantTid',
+              sorter:true
+            },
+            {
+              title: 'Address',
+              dataIndex: 'currency',
+              key: 'currency',
+            },
+          ],
+          dataSource: [
+          ],
+          pagination:{
+            current:1,
+            pageSize:10
+          },
+          sorter:{
+            field:'id',
+            order:'desc'
+          },
+          params:{
+            total:0,
+            page:1,
+            pageSize:10,
+            sorter:'id',
+            order:'asc',
+            filter:'refunded'
+          },
+          loading:false
+        }
+      },  
+      mounted(){
+        this.fetchData();
+      },
+      methods:{
+        fetchData:function(){
+          this.loading=true;
+          //axios.get('../payment/table_list?page='+page.current+'&pageSize='+page.pageSize+"&sorter="+this.sorter.field+'&order='+this.sorter.order)
+          axios.get('../payment/table_list',{
+            params:this.params
+          })
+            .then(response=>{
+              this.dataSource=response.data.data;
+              this.params.total=response.data.total;
+              this.loading=false;
+              console.log(this.activeTab);
+              console.log(this.$parent.activeKey);
+
+            })
+        },
+        handleTableChange: function(pag, filters, sorter){
+          this.params.pageSize=pag.pageSize;
+          this.params.sorter=sorter.order===undefined?'id':sorter.field;
+          this.params.order=sorter.order===undefined?'desc':sorter.order=='ascend'?'asc':'desc';
+          this.fetchData();
+
+        },
+      }
+
+    };
+  </script>

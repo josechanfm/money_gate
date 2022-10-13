@@ -1,5 +1,5 @@
 <script setup>
-    import AppLayout from "@/Layouts/AppLayout.vue";
+    import AdminLayout from "@/Layouts/AdminLayout.vue";
     import { Head } from "@inertiajs/inertia-vue3";
     //import BreezeButton from "@/Components/Button.vue";
     import { Link } from "@inertiajs/inertia-vue3";
@@ -25,7 +25,7 @@
     <template>
         <Head title="Blog Edit" />
     
-        <AppLayout>
+        <AdminLayout>
             <template #header>
                 <h2 class="text-xl font-semibold leading-tight text-gray-800">
                     Payment Edit
@@ -111,5 +111,5 @@
                     </div>
                 </div>
             </div>
-        </AppLayout>
+        </AdminLayout>
     </template>

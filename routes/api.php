@@ -22,3 +22,4 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::middleware('auth:sanctum')->apiResource('payments',PaymentController::class);
 
+Route::apiResource('list_payments',PaymentController::class);

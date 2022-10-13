@@ -5,6 +5,9 @@ use Illuminate\Http\Request;
 use Inertia\Inertia;
 use App\Models\Payment;
 use Illuminate\Support\Facades\Validator;
+use App\Http\Controllers\Api\PaymentController;
+use App\Http\Requests\StorePaymentRequest;
+
 
 class PaymentCrudController extends Controller
 {
@@ -15,8 +18,8 @@ class PaymentCrudController extends Controller
      */
     public function index()
     {
-        $data = Payment::paginate(5);
-        return Inertia::render('Payments/Index',['payments'=>$data]);
+        $data = Payment::orderBy('id','desc')->paginate(5);
+        return Inertia::render('Payments_crud/Index',['payments'=>$data]);
     }
 
     /**
@@ -27,7 +30,7 @@ class PaymentCrudController extends Controller
     public function create()
     {
         return Inertia::render(
-            'Payments/Create'
+            'Payments_crud/Create'
         );
     }
 
@@ -37,9 +40,15 @@ class PaymentCrudController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StorePaymentRequest $request)
     {
-        //
+        $paymentApi=new PaymentController;
+
+        $result=$paymentApi->store($request);
+
+        return redirect()->route('payment_crud.index')
+        ->with('message','Payment Updated Successful.')->with('result',$result);
+
     }
 
     /**
@@ -52,7 +61,7 @@ class PaymentCrudController extends Controller
     {
         $payment=Payment::findOrFail($id);
         return Inertia::render(
-            'Payments/Show',
+            'Payments_crud/Show',
             [
                 'payment'=>$payment
             ]
@@ -70,7 +79,7 @@ class PaymentCrudController extends Controller
     {
         $payment=Payment::findOrFail($id);
         return Inertia::render(
-            'Payments/Edit',
+            'Payments_crud/Edit',
             [
                 'payment'=>$payment
             ]
@@ -92,7 +101,7 @@ class PaymentCrudController extends Controller
         ])->validate();
         if($request->has('id')){
             Payment::find($request->input('id'))->update($request->all());
-            return redirect()->route('payment.index')
+            return redirect()->route('payment_crud.index')
                 ->with('message','Payment Updated Successful.');
         }
     }

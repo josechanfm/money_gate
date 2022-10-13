@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Http\Controllers\AccessTokenController;
 use App\Http\Controllers\AdminController;
-
+use App\Http\Controllers\PaymentController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -39,5 +39,12 @@ Route::middleware([
 
 Route::resource('payment_crud',App\Http\Controllers\PaymentCrudController::class);
 Route::resource('payments',App\Http\Controllers\PaymentSpaController::class);
+
 Route::resource('access_tokens',AccessTokenController::class);
 Route::get('access_tokens_test',[AccessTokenController::class,'test']);
+Route::get('http_api',[AdminController::class,'http_api']);
+Route::get('/payment/list', function () {
+    return Inertia::render('Payments/Dashboard');
+});
+Route::get('payment/table_list',[PaymentController::class,'table_list']);
+Route::get('payment/create',[PaymentController::class,'create']);
