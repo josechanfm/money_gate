@@ -9,6 +9,7 @@
     const form = useForm({
         merchant_id: '',
         merchantTid: '',
+        sign:'sign'
 
     });
 
@@ -35,6 +36,7 @@
     const onFinish = values => {
       console.log('Success:', values);
       //form.post(route("payment.store",form));
+      form.post(route("payment.store",form));
     };
     const onFinishFailed = errorInfo => {
       console.log('Failed:', errorInfo);
@@ -54,6 +56,11 @@
                     Payment Create
                 </h2>
             </template>
+                    <div class="flex" v-if="form.errors.api">
+                      <div>
+                        <p class="text-sm">{{ form.errors.api }}</p>
+                      </div>
+                    </div>
             <a-form
                 :model="form"
                 v-bind="layout"
@@ -76,8 +83,9 @@
                 <a-form-item :name="['amount']" label="Amount">
                     <a-input v-model:value="form.amount" />
                 </a-form-item>
+                <a-input v-model:value="form.sign" type="hidden" />
                 <a-form-item :wrapper-col="{ ...layout.wrapperCol, offset: 8 }">
-                <a-button type="primary" html-type="submit" @click.prevent="onSubmit">Submit</a-button>
+                <a-button type="primary" html-type="submit" >Submit</a-button>
                 </a-form-item>
             </a-form>
 

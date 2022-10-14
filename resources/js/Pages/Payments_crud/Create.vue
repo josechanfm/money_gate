@@ -20,12 +20,12 @@
 </script>
     
     <template>
-        <Head title="Blog Create" />
+        <Head title="Payment Create" />
     
         <AdminLayout>
             <template #header>
                 <h2 class="text-xl font-semibold leading-tight text-gray-800">
-                    Blog Create
+                    Payment Create
                 </h2>
             </template>
     

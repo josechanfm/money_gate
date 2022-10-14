@@ -20,6 +20,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 
-Route::middleware('auth:sanctum')->apiResource('payments',PaymentController::class);
+//Route::middleware('auth:sanctum')->apiResource('payments',PaymentController::class);
 
-Route::apiResource('list_payments',PaymentController::class);
+Route::apiResource('payment',PaymentController::class);

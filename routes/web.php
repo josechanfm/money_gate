@@ -48,6 +48,7 @@ Route::get('http_api',[AdminController::class,'http_api']);
 Route::get('payment/table_list',[PaymentController::class,'table_list']);
 Route::resource('/payment',PaymentController::class);
 
+
 // Route::prefix('/payment')->group(function(){
 //     Route::resource('/',PaymentController::class);
 //     // Route::get('dashboard',[PaymentController::class,'index'])->name('dashboard');

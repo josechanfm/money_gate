@@ -1,6 +1,6 @@
 <script setup>
     import AdminLayout from "@/Layouts/AdminLayout.vue";
-    import { Head } from "@inertiajs/inertia-vue3";
+    import { Head, Link } from "@inertiajs/inertia-vue3";
     //import Button from "@/Components/Button.vue";
     // import { Link } from "@inertiajs/inertia-vue3";
     // import { Inertia } from "@inertiajs/inertia";
@@ -25,6 +25,7 @@
                     Payment Index
                 </h2>
             </template>
+            <a-button type="primary" href="./payment/create">Primary Button</a-button>
             <a-tabs v-model:activeKey="activeKey">
                 <a-tab-pane key="1" tab="All">
                     <ListAll/>

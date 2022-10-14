@@ -33,8 +33,16 @@ class PaymentController extends Controller
     public function store(StorePaymentRequest $request)
     {
         $paymentApi=new Api\PaymentController;
+        $request->sign=md5(json_encode($request->all()));
+        //$result=json_decode($paymentApi->store($request),true);
         $result=$paymentApi->store($request);
-        return redirect()->route('payment.index')
-            ->with('message','Payment Updated Successful.')->with('result',$result);
+        if($result->original['status']==true){
+            return redirect()->route('payment.index')
+                ->with('message','Payment Store Successful.')->with('result',$result);
+        }
+        return redirect()->back()->withErrors([
+            'api'=>'Something wrong on the API payment!'
+        ]);
+
     }
 }

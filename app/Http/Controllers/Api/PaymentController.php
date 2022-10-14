@@ -41,6 +41,35 @@ class PaymentController extends Controller
      */
     public function store(StorePaymentRequest $request)
     {
+        $sign=$request->sign;
+        $data=$request->all();
+
+        //unset($data['sign']);
+        $data['sign']='sign';
+        $verifySign=md5(json_encode($data));
+
+        if($verifySign!=$sign){
+            return response()->json([
+                'status'=>false,
+                'message'=>'Payment Created NOT successfully!',
+                'data'=>$data
+            ],200);
+        }
+        $request->sign=$verifySign;
+
+        // if($sign=='md5'){
+        //     return response()->json([
+        //         'status'=>true,
+        //         'message'=>'Payment Created successfully!',
+        //         'data'=>$data
+        //     ],200);
+        // }else{
+        //     return response()->json([
+        //         'status'=>false,
+        //         'message'=>'Payment Created NOT successfully!',
+        //         'data'=>$data
+        //     ],200);
+        // }
         $payment=Payment::create([
             'merchant_id'=>$request->merchant_id,
             'merchantTid'=>$request->merchantTid,
