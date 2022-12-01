@@ -1,33 +1,32 @@
-<script setup>
-    import AdminLayout from "@/Layouts/AdminLayout.vue";
-    import { Head, Link } from "@inertiajs/inertia-vue3";
-    //import Button from "@/Components/Button.vue";
-    // import { Link } from "@inertiajs/inertia-vue3";
-    // import { Inertia } from "@inertiajs/inertia";
-    import { defineComponent, ref } from 'vue';
-    import ListAll from '@/Pages/Payments/ListAll.vue';
-    import ListSucceed from '@/Pages/Payments/ListSucceed.vue';
-    import ListRefunded from '@/Pages/Payments/ListRefunded.vue';
-    import ListUncaptured from '@/Pages/Payments/ListUncaptured.vue';
-    import ListFailed from '@/Pages/Payments/ListFailed.vue';
 
-    const activeKey=ref('1');
-        
-    </script>
-    
     <template>
-    
-      <Head title="Payments" />
-    
-        <AdminLayout>
+        <Head title="Payments" />
+        <admin-layout>
             <template #header>
                 <h2 class="text-xl font-semibold leading-tight text-gray-800">
-                    Payment Index
+                    Payment Index 
                 </h2>
             </template>
-            <a-button type="primary" href="./payment/create">Primary Button</a-button>
-            <a-tabs v-model:activeKey="activeKey">
-                <a-tab-pane key="1" tab="All">
+            <!-- <a-button type="primary" href="./payment/create">Primary Button</a-button> -->
+            <!-- <a-tabs v-model:activeKey="activeKey"> -->
+                <!-- <a-tab-pane key="1" tab="All">
+                    <template>
+                        <a-table 
+                            :dataSource="dataSource" 
+                            :columns="columns" 
+                            :pagination="pagination"
+                            :loading="loading"
+                            show-size-changer
+                            :customRow="customRow"
+                            @change="handleTableChange"
+                            />
+                    </template>
+                </a-tab-pane> -->
+                <list :payments="payments"></list>
+                <!-- <a-tab-pane key="1" tab="All">
+                    <ListAll/>
+                </a-tab-pane> -->
+                <!-- <a-tab-pane key="1" tab="All">
                     <ListAll/>
                 </a-tab-pane>
                 <a-tab-pane key="2" tab="Succeeded" force-render >
@@ -41,8 +40,39 @@
                 </a-tab-pane>
                 <a-tab-pane key="5" tab="Failed">
                     <ListFailed/>
-                </a-tab-pane>
-            </a-tabs>    
+                </a-tab-pane> -->
+    </admin-layout>
 
-        </AdminLayout>
-    </template>
+</template>
+
+<script>
+import AdminLayout from "@/Layouts/AdminLayout.vue";
+// import { Head, Link } from "@inertiajs/inertia-vue3";
+//import Button from "@/Components/Button.vue";
+// import { Link } from "@inertiajs/inertia-vue3";
+import { Inertia } from "@inertiajs/inertia";
+import List from '@/Pages/Payments/List.vue';
+import ListAll from '@/Pages/Payments/ListAll.vue';
+import ListSucceed from '@/Pages/Payments/ListSucceed.vue';
+import ListRefunded from '@/Pages/Payments/ListRefunded.vue';
+import ListUncaptured from '@/Pages/Payments/ListUncaptured.vue';
+import ListFailed from '@/Pages/Payments/ListFailed.vue';
+
+
+// const activeKey=ref('1');
+
+export default {
+    props:['payments'],
+    components: {
+        AdminLayout,
+        List,
+        ListAll,
+        ListFailed,
+        ListSucceed,
+        ListRefunded,
+        ListUncaptured,
+        Inertia,
+    },
+};
+
+</script>

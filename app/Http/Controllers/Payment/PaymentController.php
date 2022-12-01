@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Payment;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use App\Models\Payment;
@@ -11,11 +12,40 @@ class PaymentController extends Controller
 {
     public function index()
     {
-        $data = Payment::orderBy('id','desc')->paginate(10);
-        return Inertia::render('Payments/Dashboard',['payments'=>$data]);
+        // $data = Payment::orderBy('id','desc')->paginate(10);
+        // $payload = response()->json($data);
+        
+        // return response()->json($payload);
+        $data=Payment::get();
+        // echo $e;
+        $data=['payments'=>$data];
+
+        // echo json_encode($data);
+
+       // $data = Payment::orderBy('id','desc')->paginate(10);
+        return Inertia::render('Payments/Dashboard', $data);
     }
 
-    public function table_list(Request $request){
+    public function newPayment()
+    {
+        // dd(request()->route());
+        Payment::insert([
+            'merchantTid' => 'abc',
+            'merchant_id' => 'abc',
+            'merchant_order_id' => 543,
+            'currency' => 'MOP',
+            'amount' => '0',
+            'merchant_user_id' => '1',
+            'timeout' => '30',
+            'notify_url' => 'https://test.com/',
+            'return_url' => 'https://test.com/',
+            'sign' => 'ABC',
+            'status' => 'Success',
+        ]);
+    }
+
+    public function table_list(Request $request)
+    {
         if($request->filter=='all'){
             $data = Payment::orderBy($request->sorter,$request->order)->paginate($request->pageSize);
         }else{
@@ -30,6 +60,7 @@ class PaymentController extends Controller
             'Payments/Create'
         );
     }
+    
     public function store(StorePaymentRequest $request)
     {
         $paymentApi=new Api\PaymentController;

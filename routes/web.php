@@ -5,7 +5,8 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Http\Controllers\AccessTokenController;
 use App\Http\Controllers\AdminController;
-use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\Payment\PaymentController;
+use App\Http\Controllers\Order\OrderController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -37,8 +38,26 @@ Route::middleware([
     Route::get('/admin',[AdminController::class,'index'])->name('admin');
 });
 
-Route::resource('payment_crud',App\Http\Controllers\PaymentCrudController::class);
-Route::resource('payments',App\Http\Controllers\PaymentSpaController::class);
+Route::name('order.')->prefix('/order')->group(function () {
+    Route::resource('order', OrderController::class);
+});
+
+Route::name('payment.')->prefix('/payment')->group(function () {
+   
+    // Route::resource('payment_crud',Payment\PaymentCrudController::class);
+    // Route::resource('payments',Payment\PaymentSpaController::class);
+    // Route::resource('payment',Payment\PaymentController::class);
+    Route::resource('payment_crud', 'Payment\PaymentCrudController')->names('payment_crud');
+    Route::resource('payments', 'Payment\PaymentSpaController')->names('payments');
+    Route::resource('payment', 'Payment\PaymentController')->names('payment');
+    Route::post('/payments/order', 'Payment\PaymentSpaController@order')->name('payments.order');
+
+    // Route::post('/payments/createOrder', 'Payment\PaymentSpaController@createOrder')->name('payments.createOrder');
+
+});
+
+// Route::post('/api/payments/order', 'Api\PaymentController@order')->name('paymentApi.order');
+Route::get('api/payments/order', 'Api\PaymentController@order')->name('paymentApi.order');
 
 Route::resource('access_tokens',AccessTokenController::class);
 Route::get('access_tokens_test',[AccessTokenController::class,'test']);
@@ -46,7 +65,8 @@ Route::get('http_api',[AdminController::class,'http_api']);
 
 //Route::get('/payment/dashboard',[PaymentController::class,'index'])->name('payment.dashboard');
 Route::get('payment/table_list',[PaymentController::class,'table_list']);
-Route::resource('/payment',PaymentController::class);
+
+Route::get('payment/newPayment', 'Payment\PaymentController@newPayment')->name('payments.new-payment');
 
 
 // Route::prefix('/payment')->group(function(){
