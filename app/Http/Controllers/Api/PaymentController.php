@@ -7,6 +7,8 @@ use App\Models\Payment;
 use App\Models\Order;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Date;
+use Carbon\Carbon;
 
 class PaymentController extends Controller
 {
@@ -21,21 +23,97 @@ class PaymentController extends Controller
             'identifyNumber' => 'required',
             'order' => 'array',
             'order.*.amount' => 'required',
-            'order.*.name' => 'required'
+            'order.*.name' => 'required',
+            'payer' => 'array',
         ]);
 
         // dd($validated);
+        $response = $this->order( $validated );
 
-        return response( $validated );
+        return response( $response );
+    }
+    
+    public function show( $orderNum ){
+
+    }
+
+    public function getOrderId(){
+        $lastOrder = Order::latest()->first();
+        // If the last order is created at today 
+        $isToday = Carbon::parse( $lastOrder->created_at )->isToday() ;
+
+        if( $isToday ){
+            // Last Order 是今天的, 繼承 last code
+            $orderCode = ( $lastOrder->order_code ) + 1;
+        }else{
+            // Last Order 不是今天的, 開新 code
+            $orderCode = Carbon::now()->format('ymd').'00001';
+        }
+
+        return $orderCode.rand(100, 999);
     }
 
     public function order( ){
-        
+        $currency = "MOP"; // $payment['currency'];
+
+        $order = [
+            [
+                "amount" => "1000",
+                "name" => "xxx課程學費"
+            ],[
+                "amount" => "1000",
+                "name" => "xxx課程報名費"  
+            ]
+        ];
+
+        $payer = [
+            "userType" => "L",
+            "payerName" => "leong chi fong",
+            "citizenIdNumber" => "12345678",
+        ];
+
+        $cmmAmtMixs = [];
+        $orderAmount = [ 'amount' => 0 , 'currency' => $currency ];
+        foreach($order as $k => $v){
+            $cmmAmtMixs[$k] = [
+                "amountType" => range('A', 'Z')[$k],
+                "amountDescribe" => $v['name'],
+                "mixAmount" => [
+                    "amount" => $v['amount'],
+                    "currency" => $currency,
+                ]
+            ];
+            $orderAmount['amount'] += (INT) $v['amount'];
+        }
+
         $merchant_id = config('payment.merchant_id');
-        
+             
         $public_key = config('payment.public_key');
 
-        
+        $order = [
+            "merchantInfo" => [
+                "merchantId" => $merchant_id,
+                "merchantNotifyUrl" => url("/api/payments/notify"),
+            ],
+            "order" => [
+                // order number, 訂單號, 
+                // 年月日時分 + 四位流水號 + 隨機數3位
+                "merOrderNo"=> $this->getOrderId(),
+                // 報名編號/學生編號, 建議使用報名編號特定哪一筆學費
+				// "merchantUserNo" => $payment['identifyNumber'],
+                "orderExceedTime" => Carbon::now()->addMinutes(30),
+                "cmmAmtMixs" => $cmmAmtMixs,
+                "orderAmount" => $orderAmount
+            ],
+            "payer" => $payer
+        ];
+        $body = json_encode($order);
+        $key = md5( $body.$public_key );
+
+        // $response = Http::post('http://example.com/users', $order);
+    }
+
+    public function notify( Request $request ){
 
     }
 }
