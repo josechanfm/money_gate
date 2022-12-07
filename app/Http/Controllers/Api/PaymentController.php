@@ -13,9 +13,8 @@ use Carbon\Carbon;
 class PaymentController extends Controller
 {
 
-    public function store( Request $request )
+    public function create_order( Request $request )
     {
-       
         $validated = $request->validate([
             'currency' => ['required', Rule::in(['MOP','HKD'])],
             'amountTotal' => 'required|integer|min:0',
@@ -33,21 +32,27 @@ class PaymentController extends Controller
         return response( $response );
     }
     
-    public function show( $orderNum ){
+    public function query_order( $orderNum ){
 
     }
 
     public function getOrderId(){
+        //Default order Code 
+        $orderCode = Carbon::now()->format('ymd').'00001';
+        
         $lastOrder = Order::latest()->first();
-        // If the last order is created at today 
-        $isToday = Carbon::parse( $lastOrder->created_at )->isToday() ;
 
-        if( $isToday ){
-            // Last Order 是今天的, 繼承 last code
-            $orderCode = ( $lastOrder->order_code ) + 1;
+        if( $lastOrder == null){
+            
         }else{
-            // Last Order 不是今天的, 開新 code
-            $orderCode = Carbon::now()->format('ymd').'00001';
+
+            // If the last order is created at today 
+            $isToday = Carbon::parse( $lastOrder->created_at )->isToday() ;
+
+            if( $isToday ){
+                // Last Order 是今天的, 繼承 last code
+                $orderCode = ( $lastOrder->order_code ) + 1;
+            }
         }
 
         return $orderCode.rand(100, 999);
