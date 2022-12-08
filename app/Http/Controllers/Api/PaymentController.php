@@ -29,7 +29,7 @@ class PaymentController extends Controller
         // dd($validated);
         $response = $this->order( $validated );
 
-        return response( $response );
+        return response( "abc" );
     }
     
     public function query_order( $orderNum ){
