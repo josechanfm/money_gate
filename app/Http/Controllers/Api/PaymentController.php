@@ -29,7 +29,7 @@ class PaymentController extends Controller
         // dd($validated);
         $response = $this->order( $validated );
 
-        return response( "abc" );
+        return response( $response );
     }
     
     public function query_order( $orderNum ){
@@ -115,6 +115,7 @@ class PaymentController extends Controller
         $body = json_encode($order);
         $key = md5( $body.$public_key );
 
+        return $order;
         // $response = Http::post('http://example.com/users', $order);
     }
 
