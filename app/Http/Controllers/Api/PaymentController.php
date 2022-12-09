@@ -107,16 +107,33 @@ class PaymentController extends Controller
         $body = json_encode($order);
         $signature = md5( $body.$this->public_key );
 
-        echo $body;
-        echo "<hr>";
-        echo $signature ." / " . $this->public_key;
-        exit();
-
-        $response = Http::withHeaders([
+        // ----
+        // $response = Http::withHeaders([
+        //     'merchantId' => '1234567890',
+        //     'Content-Type' => 'application/json',
+        //     'signature' => $signature
+        // ])->post('https://aopuat.lusobank.com.mo/gateway/mer/createOrder', $body);
+        
+        // ----
+        $payload = $body;
+        $headers = [
             'merchantId' => '1234567890',
-            'Content-Type' => 'application/json',
+            'Accept: application/json',
+            'Content-Type: application/json',
             'signature' => $signature
-        ])->post('https://aopuat.lusobank.com.mo/gateway/mer/createOrder', $body);
+        ];
+        $ch = curl_init();
+
+        curl_setopt($ch, CURLOPT_URL,"https://aopuat.lusobank.com.mo/gateway/mer/createOrder");
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_POSTFIELDS,$payload);
+        curl_setopt($ch, CURLOPT_HTTPHEADER,$headers);
+        
+        $response = curl_exec($ch);
+        
+        curl_close ($ch);
+
 
         return $response;
     }
