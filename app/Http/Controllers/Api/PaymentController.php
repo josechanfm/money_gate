@@ -98,7 +98,7 @@ class PaymentController extends Controller
                 "merOrderNo"=> $this->getOrderId(),
                 "merchantUserNo"=> $data['identifyNumber'],
                 // Order 30分鐘後過期
-                "orderExceedTime" => Carbon::now()->addMinutes(30),
+                "orderExceedTime" => Carbon::now()->addMinutes(30)->format("Y-m-d H:i:s"),
                 "cmmAmtMixs" => $cmmAmtMixs,
                 "orderAmount" => $orderAmount
             ],
@@ -107,9 +107,14 @@ class PaymentController extends Controller
         $body = json_encode($order);
         $signature = md5( $body.$this->public_key );
 
+        echo $body;
+        echo "<hr>";
+        echo $signature;
+        return ;
+
         // ----
         // $response = Http::withHeaders([
-        //     'merchantId' => '1234567890',
+        //     'merchantId' => $this->merchant_id,
         //     'Content-Type' => 'application/json',
         //     'signature' => $signature
         // ])->post('https://aopuat.lusobank.com.mo/gateway/mer/createOrder', $body);
@@ -117,21 +122,19 @@ class PaymentController extends Controller
         // ----
         $payload = $body;
         $headers = [
-            'merchantId' => '1234567890',
-            'Accept: application/json',
+            'merchantId' => $this->merchant_id,
             'Content-Type: application/json',
             'signature' => $signature
         ];
         $ch = curl_init();
 
         curl_setopt($ch, CURLOPT_URL,"https://aopuat.lusobank.com.mo/gateway/mer/createOrder");
-        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_POST, true);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_POSTFIELDS,$payload);
         curl_setopt($ch, CURLOPT_HTTPHEADER,$headers);
         
         $response = curl_exec($ch);
-        
         curl_close ($ch);
 
 
