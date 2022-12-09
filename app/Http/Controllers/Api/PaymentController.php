@@ -37,7 +37,7 @@ class PaymentController extends Controller
             'payer' => 'array',
                 'payer.userType' => '',
                 'payer.payerName' => '',
-                'payer.citizenNumber' => '', 
+                'payer.citizenIdNumber' => '', 
             'returnUrl' => '',
         ]);
 
@@ -139,7 +139,7 @@ class PaymentController extends Controller
         curl_close ($ch);
 
 
-        return $response;
+        return ["response"=>$response , "order"=>$body];
     }
 
     public function notify( Request $request ){
