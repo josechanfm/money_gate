@@ -76,15 +76,19 @@ class PaymentController extends Controller
         // Sub Order 
         $cmmAmtMixs = [];
         foreach($data['order'] as $k => $v){
-            $cmmAmtMixs[$k] = [
-                "amountType" => range('A', 'Z')[$k],
-                "amountDescribe" => $v['name'],
-                "mixAmount" => [
-                    "amount" => $v['amount'],
-                    "currency" => $data['currency'],
-                ]
-            ];
-            $orderAmount['amount'] += (INT) $v['amount'];
+
+            // The amount is more than 0
+            if( (int) $v['amount'] > 0 ){
+                $cmmAmtMixs[$k] = [
+                    "amountType" => range('A', 'Z')[$k],
+                    "amountDescribe" => $v['name'],
+                    "mixAmount" => [
+                        "amount" => $v['amount'],
+                        "currency" => $data['currency'],
+                    ]
+                ];
+                $orderAmount['amount'] += (INT) $v['amount'];
+            }
         }
 
         $order = [
@@ -115,18 +119,16 @@ class PaymentController extends Controller
         // ])->post('https://aopuat.lusobank.com.mo/gateway/mer/createOrder', $body);
         
         // ----
-        $payload = $body;
         $headers = [
             'merchantId: '.$this->merchant_id,
             'Content-Type: application/json',
-            'signature:. '.$signature
+            'signature: '.$signature
         ];
         $ch = curl_init();
-
         curl_setopt($ch, CURLOPT_URL,"https://aopuat.lusobank.com.mo/gateway/mer/createOrder");
         curl_setopt($ch, CURLOPT_POST, true);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_POSTFIELDS,$payload);
+        curl_setopt($ch, CURLOPT_POSTFIELDS,$body);
         curl_setopt($ch, CURLOPT_HTTPHEADER,$headers);
         
         $response = curl_exec($ch);
