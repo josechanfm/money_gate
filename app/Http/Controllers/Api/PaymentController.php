@@ -6,12 +6,17 @@ use App\Http\Controllers\Controller;
 use App\Models\Payment;
 use App\Models\Order;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Date;
 use Carbon\Carbon;
 
 class PaymentController extends Controller
 {
+
+    protected $merchant_id = config('payment.merchant_id');
+             
+    protected $public_key = config('payment.public_key');
 
     public function create_order( Request $request )
     {
@@ -45,7 +50,6 @@ class PaymentController extends Controller
         if( $lastOrder == null){
             
         }else{
-
             // If the last order is created at today 
             $isToday = Carbon::parse( $lastOrder->created_at )->isToday() ;
 
@@ -58,65 +62,52 @@ class PaymentController extends Controller
         return $orderCode.rand(100, 999);
     }
 
-    public function order( ){
-        $currency = "MOP"; // $payment['currency'];
+    public function order( $data ){
 
-        $order = [
-            [
-                "amount" => "1000",
-                "name" => "xxx課程學費"
-            ],[
-                "amount" => "1000",
-                "name" => "xxx課程報名費"  
-            ]
-        ];
+        // Order Amount
+        $orderAmount = [ 'amount' => 0 , 'currency' => $data['currency'] ];
 
-        $payer = [
-            "userType" => "L",
-            "payerName" => "leong chi fong",
-            "citizenIdNumber" => "12345678",
-        ];
-
+        // Sub Order 
         $cmmAmtMixs = [];
-        $orderAmount = [ 'amount' => 0 , 'currency' => $currency ];
-        foreach($order as $k => $v){
+        foreach($data['order'] as $k => $v){
             $cmmAmtMixs[$k] = [
                 "amountType" => range('A', 'Z')[$k],
                 "amountDescribe" => $v['name'],
                 "mixAmount" => [
                     "amount" => $v['amount'],
-                    "currency" => $currency,
+                    "currency" => $data['currency'],
                 ]
             ];
             $orderAmount['amount'] += (INT) $v['amount'];
         }
 
-        $merchant_id = config('payment.merchant_id');
-             
-        $public_key = config('payment.public_key');
-
         $order = [
             "merchantInfo" => [
-                "merchantId" => $merchant_id,
+                "merchantId" => $this->merchant_id,
                 "merchantNotifyUrl" => url("/api/payments/notify"),
             ],
             "order" => [
                 // order number, 訂單號, 
                 // 年月日時分 + 四位流水號 + 隨機數3位
                 "merOrderNo"=> $this->getOrderId(),
-                // 報名編號/學生編號, 建議使用報名編號特定哪一筆學費
-				// "merchantUserNo" => $payment['identifyNumber'],
+                "merchantUserNo"=> $data['identifyNumber'],
+                // Order 30分鐘後過期
                 "orderExceedTime" => Carbon::now()->addMinutes(30),
                 "cmmAmtMixs" => $cmmAmtMixs,
                 "orderAmount" => $orderAmount
             ],
-            "payer" => $payer
+            "payer" => $data['payer']
         ];
         $body = json_encode($order);
-        $key = md5( $body.$public_key );
+        $signature = md5( $body.$this->public_key );
+
+        $response = Http::withHeaders([
+            'merchantId' => '1234567890',
+            'Content-Type' => 'application/json',
+            'signature' => $signature
+        ])->post('http://aopuat.lusobank.com.mo/gateway/mer/createOrder', $body);
 
         return $order;
-        // $response = Http::post('http://example.com/users', $order);
     }
 
     public function notify( Request $request ){
