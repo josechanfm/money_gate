@@ -107,11 +107,6 @@ class PaymentController extends Controller
         $body = json_encode($order);
         $signature = md5( $body.$this->public_key );
 
-        echo $body;
-        echo "<hr>";
-        echo $signature;
-        return ;
-
         // ----
         // $response = Http::withHeaders([
         //     'merchantId' => $this->merchant_id,
@@ -122,9 +117,9 @@ class PaymentController extends Controller
         // ----
         $payload = $body;
         $headers = [
-            'merchantId' => $this->merchant_id,
+            'merchantId: '.$this->merchant_id,
             'Content-Type: application/json',
-            'signature' => $signature
+            'signature:. '.$signature
         ];
         $ch = curl_init();
 
