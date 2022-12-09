@@ -13,13 +13,16 @@ use Carbon\Carbon;
 
 class PaymentController extends Controller
 {
+    protected $merchant_id;
 
-    public function __construct(){
+    protected $public_key;
 
-        $this->merchant_id = config('payment.merchant_id');
-             
-        $this->public_key = config('payment.public_key');
+    public function __construct()
+    {
+        $this->merchant_id = config('payment.luso.merchant_id');
+        $this->public_key = config('payment.luso.public_key');
     }
+    
 
     public function create_order( Request $request )
     {
@@ -104,13 +107,18 @@ class PaymentController extends Controller
         $body = json_encode($order);
         $signature = md5( $body.$this->public_key );
 
+        echo $body;
+        echo "<hr>";
+        echo $signature ." / " . $this->public_key;
+        exit();
+
         $response = Http::withHeaders([
             'merchantId' => '1234567890',
             'Content-Type' => 'application/json',
             'signature' => $signature
-        ])->post('http://aopuat.lusobank.com.mo/gateway/mer/createOrder', $body);
+        ])->post('https://aopuat.lusobank.com.mo/gateway/mer/createOrder', $body);
 
-        return $order;
+        return $response;
     }
 
     public function notify( Request $request ){
