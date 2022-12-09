@@ -14,9 +14,12 @@ use Carbon\Carbon;
 class PaymentController extends Controller
 {
 
-    protected $merchant_id = config('payment.merchant_id');
+    public function __construct(){
+
+        $this->merchant_id = config('payment.merchant_id');
              
-    protected $public_key = config('payment.public_key');
+        $this->public_key = config('payment.public_key');
+    }
 
     public function create_order( Request $request )
     {
