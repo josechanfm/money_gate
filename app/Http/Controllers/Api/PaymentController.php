@@ -32,9 +32,13 @@ class PaymentController extends Controller
             // Gateway 回傳這個Number, 即報名編號/繳費編號等等. 用來識別是哪一個筆費用
             'identifyNumber' => 'required',
             'order' => 'array',
-            'order.*.amount' => 'required',
-            'order.*.name' => 'required',
+                'order.*.amount' => '',
+                'order.*.name' => 'required',
             'payer' => 'array',
+                'payer.userType' => '',
+                'payer.payerName' => '',
+                'payer.citizenNumber' => '', 
+            'returnUrl' => '',
         ]);
 
         // dd($validated);
