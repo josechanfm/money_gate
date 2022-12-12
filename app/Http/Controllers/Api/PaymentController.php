@@ -62,7 +62,7 @@ class PaymentController extends Controller
         
         curl_close ($ch);
 
-        return response()->json( $response );
+        return response( $response );
     }
 
     public function getOrderId(){
@@ -145,7 +145,7 @@ class PaymentController extends Controller
         curl_close ($ch);
 
 
-        return response()->json( ["response"=>$response , "order"=>$body] );
+        return response( $response );
     }
 
     public function notify( Request $request ){
