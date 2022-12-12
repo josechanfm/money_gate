@@ -20,8 +20,8 @@ return new class extends Migration
             $table->char('merchantOrderNumber', 50);
             $table->string('identifyNumber');
             $table->char('bank');
-            $table->char('order_code');
-            $table->integer('rand');
+            $table->char('order_number',50);
+            $table->text('order');
             $table->text('payer');
             $table->text('send_json');
             $table->text('result_json')->nullable();

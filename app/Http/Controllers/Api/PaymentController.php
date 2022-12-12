@@ -86,7 +86,7 @@ class PaymentController extends Controller
         return $orderCode.rand(100, 999);
     }
 
-    public function order( $data ){
+    private function order( $data ){
 
         // Order Amount
         $orderAmount = [ 'amount' => 0 , 'currency' => $data['currency'] ];
@@ -116,8 +116,7 @@ class PaymentController extends Controller
             ],
             "order" => [
                 // order number, 訂單號, 
-                // 年月日時分 + 四位流水號 + 隨機數3位
-                "merOrderNo"=> $this->getOrderId(),
+                "merOrderNo"=> $data['identifyNumber'],
                 "merchantUserNo"=> $data['identifyNumber'],
                 // Order 30分鐘後過期
                 "orderExceedTime" => Carbon::now()->addMinutes(30)->format("Y-m-d H:i:s"),
@@ -128,6 +127,7 @@ class PaymentController extends Controller
         ];
         $body = json_encode($order);
         $signature = md5( $body.$this->public_key );
+
 
         $headers = [
             'merchantId: '.$this->merchant_id,
@@ -143,15 +143,26 @@ class PaymentController extends Controller
         
         $resp = curl_exec($ch);
 
-        $resp = json_decode($resp);
         curl_close ($ch);
+        
+        Order::create([
+            'amount' => $orderAmount['amount'],
+            'currency' => $orderAmount['currency'],
+            'merchantOrderNumber' => $data['identifyNumber'],
+            'order' => json_encode($order['order']),
+            'payer' => json_encode($order['payer']),
+            'send_json' => $body,
+            'result_json' => $resp
+        ]);
 
+        $resp = json_decode($resp);
         return [
             'response' => $resp,
             'order' => $body,
         ];
 
     }
+
 
     public function notify( Request $request ){
 
