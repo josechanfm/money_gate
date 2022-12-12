@@ -40,7 +40,7 @@ class PaymentController extends Controller
                 'payer.userType' => '',
                 'payer.payerName' => '',
                 'payer.citizenIdNumber' => '', 
-            'returnUrl' => '',
+            'notifyUrl' => '',
         ]);
 
         // dd($validated);
@@ -55,7 +55,7 @@ class PaymentController extends Controller
         ]);
 
         $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $this->host."/gateway/mer/payment/".$validated['orderNo'] );
+        curl_setopt($ch, CURLOPT_URL, $this->host."gateway/mer/payment/".$validated['orderNo'] );
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         
         $response = curl_exec($ch);
@@ -112,7 +112,7 @@ class PaymentController extends Controller
         $order = [
             "merchantInfo" => [
                 "merchantId" => $this->merchant_id,
-                "merchantNotifyUrl" => url("/api/payments/notify"),
+                "merchantNotifyUrl" => $data['notifyUrl'],
             ],
             "order" => [
                 // order number, 訂單號, 
@@ -129,21 +129,13 @@ class PaymentController extends Controller
         $body = json_encode($order);
         $signature = md5( $body.$this->public_key );
 
-        // ----
-        // $response = Http::withHeaders([
-        //     'merchantId' => $this->merchant_id,
-        //     'Content-Type' => 'application/json',
-        //     'signature' => $signature
-        // ])->post('https://aopuat.lusobank.com.mo/gateway/mer/createOrder', $body);
-        
-        // ----
         $headers = [
             'merchantId: '.$this->merchant_id,
             'Content-Type: application/json',
             'signature: '.$signature
         ];
         $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $this->host."/gateway/mer/createOrder");
+        curl_setopt($ch, CURLOPT_URL, $this->host."gateway/mer/createOrder");
         curl_setopt($ch, CURLOPT_POST, true);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_POSTFIELDS,$body);
