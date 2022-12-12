@@ -13,7 +13,6 @@ class PaymentController extends Controller
 {
     public function index()
     {
-        echo Carbon::now();
         // $data = Payment::orderBy('id','desc')->paginate(10);
         // $payload = response()->json($data);
         

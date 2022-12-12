@@ -21,6 +21,8 @@ class PaymentController extends Controller
     {
         $this->merchant_id = config('payment.luso.merchant_id');
         $this->public_key = config('payment.luso.public_key');
+
+        $this->host = 'https://aopuat.lusobank.com.mo/';
     }
     
 
@@ -47,8 +49,14 @@ class PaymentController extends Controller
         return response( $response );
     }
     
-    public function query_order( $orderNum ){
+    public function query_order( $orderNo ){
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $this->host."/gateway/mer/payment/".$orderNo );
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        $response = curl_exec($ch);
+        curl_close ($ch);
 
+        return response( $response );
     }
 
     public function getOrderId(){
@@ -129,7 +137,7 @@ class PaymentController extends Controller
             'signature: '.$signature
         ];
         $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL,"https://aopuat.lusobank.com.mo/gateway/mer/createOrder");
+        curl_setopt($ch, CURLOPT_URL, $this->host."/gateway/mer/createOrder");
         curl_setopt($ch, CURLOPT_POST, true);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_POSTFIELDS,$body);
