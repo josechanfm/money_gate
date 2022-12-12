@@ -25,6 +25,9 @@ class PaymentController extends Controller
         $this->host = 'https://aopuat.lusobank.com.mo/';
     }
     
+    public function index(){
+        
+    }
 
     public function create_order( Request $request )
     {

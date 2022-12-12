@@ -56,10 +56,7 @@ Route::name('payment.')->prefix('/payment')->group(function () {
 
 });
 
-// Route::post('/api/payments/order', 'Api\PaymentController@order')->name('paymentApi.order');
-
-Route::get('api/payments/notify', 'Api\PaymentController@notify')->name('paymentApi.notify');
-Route::get('api/payments/order', 'Api\PaymentController@order')->name('paymentApi.order');
+Route::get('api/payment/index', 'Api\PaymentController@index');
 
 Route::resource('access_tokens',AccessTokenController::class);
 Route::get('access_tokens_test',[AccessTokenController::class,'test']);

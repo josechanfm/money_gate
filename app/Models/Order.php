@@ -13,7 +13,12 @@ class Order extends Model
         'application_id',
         'amount',
         'currency',
-        'merchantOrderId',
+        'merchantOrderNumber',
+        'order_number',
+        'order',
+        'payer',
+        'send_json',
+        'result_json',
         'notify_url',
         'return_url',
     ];
