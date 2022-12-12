@@ -141,11 +141,16 @@ class PaymentController extends Controller
         curl_setopt($ch, CURLOPT_POSTFIELDS,$body);
         curl_setopt($ch, CURLOPT_HTTPHEADER,$headers);
         
-        $response = curl_exec($ch);
+        $resp = curl_exec($ch);
+
+        $resp = json_decode($resp);
         curl_close ($ch);
 
-        // return response( $response );
-        return response($response);
+        return response()->json([
+            'response' => $resp,
+            'order' => $body,
+        ]);
+
     }
 
     public function notify( Request $request ){
