@@ -131,10 +131,10 @@ class PaymentController extends Controller
         Order::create([
             'amount' => $orderAmount['amount'],
             'currency' => $orderAmount['currency'],
-            'merchantOrderNumber' => $data['identifyNumber'],
-            'order' => json_encode($order['order']),
-            'payer' => json_encode($order['payer']),
-            'send_json' => $body,
+            'merchantOrderNumber' => "213",
+            'order' => "213",
+            'payer' => "213",
+            'send_json' => "213",
             'result_json' => ''
         ]);
 
