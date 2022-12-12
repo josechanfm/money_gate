@@ -44,9 +44,9 @@ class PaymentController extends Controller
         ]);
 
         // dd($validated);
-        $response = $this->order( $validated );
+        $order = $this->order( $validated );
 
-        return response( $response );
+        return response()->json( $order );
     }
     
     public function query_order( Request $request ){
@@ -146,10 +146,10 @@ class PaymentController extends Controller
         $resp = json_decode($resp);
         curl_close ($ch);
 
-        return response()->json([
+        return [
             'response' => $resp,
             'order' => $body,
-        ]);
+        ];
 
     }
 
