@@ -25,9 +25,6 @@ class PaymentController extends Controller
         $this->host = 'https://aopuat.lusobank.com.mo/';
     }
     
-    public function index(){
-        
-    }
 
     public function create_order( Request $request )
     {
@@ -134,10 +131,10 @@ class PaymentController extends Controller
         Order::create([
             'amount' => $orderAmount['amount'],
             'currency' => $orderAmount['currency'],
-            'merchantOrderNumber' => "213",
-            'order' => "213",
-            'payer' => "213",
-            'send_json' => "213",
+            'merchantOrderNumber' => $data['identifyNumber'],
+            'order' => json_encode($order['order']),
+            'payer' => json_encode($order['payer']),
+            'send_json' => $body,
             'result_json' => ''
         ]);
 
