@@ -49,11 +49,17 @@ class PaymentController extends Controller
         return response( $response );
     }
     
-    public function query_order( $orderNo ){
+    public function query_order( Request $request ){
+        $validated = $request->validate([
+            'orderNo' => 'required'
+        ]);
+
         $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $this->host."/gateway/mer/payment/".$orderNo );
+        curl_setopt($ch, CURLOPT_URL, $this->host."/gateway/mer/payment/".$validated['orderNo'] );
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        
         $response = curl_exec($ch);
+        
         curl_close ($ch);
 
         return response( $response );
