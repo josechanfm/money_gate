@@ -145,7 +145,7 @@ class PaymentController extends Controller
         curl_close ($ch);
 
 
-        return ["response"=>$response , "order"=>$body];
+        return response( ["response"=>$response , "order"=>$body] );
     }
 
     public function notify( Request $request ){
