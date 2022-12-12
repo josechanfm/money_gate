@@ -16,17 +16,17 @@ return new class extends Migration
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
             $table->integer('amount');
-            $table->varchar('currency');
-            $table->varchar('merchantOrderNumber', 50);
+            $table->string('currency');
+            $table->string('merchantOrderNumber', 50);
             $table->string('identifyNumber');
-            $table->varchar('bank');
-            $table->varchar('order_number',50);
+            $table->string('bank');
+            $table->string('order_number',50);
             $table->text('order');
             $table->text('payer');
             $table->text('send_json');
             $table->text('result_json')->nullable();
-            $table->varchar('return_url')->nullable();
-            $table->varchar('notify_url')->nullable();
+            $table->string('return_url')->nullable();
+            $table->string('notify_url')->nullable();
             $table->timestamps();
         });
     }
