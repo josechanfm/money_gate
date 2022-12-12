@@ -7,11 +7,13 @@ use Illuminate\Http\Request;
 use Inertia\Inertia;
 use App\Models\Payment;
 use App\Http\Requests\StorePaymentRequest;
+use Carbon\Carbon;
 
 class PaymentController extends Controller
 {
     public function index()
     {
+        echo Carbon::now();
         // $data = Payment::orderBy('id','desc')->paginate(10);
         // $payload = response()->json($data);
         
