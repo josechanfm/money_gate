@@ -128,6 +128,15 @@ class PaymentController extends Controller
         $body = json_encode($order);
         $signature = md5( $body.$this->public_key );
 
+        Order::create([
+            'amount' => $orderAmount['amount'],
+            'currency' => $orderAmount['currency'],
+            'merchantOrderNumber' => $data['identifyNumber'],
+            'order' => json_encode($order['order']),
+            'payer' => json_encode($order['payer']),
+            'send_json' => $body,
+            'result_json' => ''
+        ]);
 
         $headers = [
             'merchantId: '.$this->merchant_id,
@@ -144,16 +153,6 @@ class PaymentController extends Controller
         $resp = curl_exec($ch);
 
         curl_close ($ch);
-        
-        Order::create([
-            'amount' => $orderAmount['amount'],
-            'currency' => $orderAmount['currency'],
-            'merchantOrderNumber' => $data['identifyNumber'],
-            'order' => json_encode($order['order']),
-            'payer' => json_encode($order['payer']),
-            'send_json' => $body,
-            'result_json' => $resp
-        ]);
 
         $resp = json_decode($resp);
         return [

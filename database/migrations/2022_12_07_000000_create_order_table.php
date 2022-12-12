@@ -16,14 +16,12 @@ return new class extends Migration
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
             $table->integer('amount');
-            $table->string('currency');
-            $table->string('merchantOrderNumber', 50);
-            $table->string('identifyNumber');
-            $table->string('bank');
-            $table->string('order_number',50);
-            $table->text('order');
-            $table->text('payer');
-            $table->text('send_json');
+            $table->string('currency')->nullable();
+            $table->string('merchantOrderNumber')->nullable();
+            $table->string('order_number')->nullable();
+            $table->text('order')->nullable();
+            $table->text('payer')->nullable();
+            $table->text('send_json')->nullable();
             $table->text('result_json')->nullable();
             $table->string('return_url')->nullable();
             $table->string('notify_url')->nullable();
