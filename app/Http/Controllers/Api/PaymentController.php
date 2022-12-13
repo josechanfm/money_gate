@@ -98,7 +98,7 @@ class PaymentController extends Controller
             "order" => [
                 // order number, 訂單號, 
                 "merOrderNo"=> $data['merOrderNo'],
-                "merchantUserNo"=> 'C0001'.rand(000,999),
+                "merchantUserNo"=> 'C22050231'.rand(00000,99999),
                 // Order 30分鐘後過期
                 "orderExceedTime" => Carbon::now()->addMinutes(60)->format("Y-m-d H:i:s"),
                 "cmmAmtMixs" => $cmmAmtMixs,
