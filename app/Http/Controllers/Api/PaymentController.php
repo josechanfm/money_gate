@@ -142,26 +142,26 @@ class PaymentController extends Controller
         curl_setopt($ch, CURLOPT_POSTFIELDS,$body);
         curl_setopt($ch, CURLOPT_HTTPHEADER,$headers);
         
-        // $resp = curl_exec($ch);
+        $resp = curl_exec($ch);
 
-        // curl_close ($ch);
+        curl_close ($ch);
 
         Order::create([
             'amount' => $orderAmount['amount'],
             'currency' => $orderAmount['currency'],
             'merchantOrderNumber' => $data['merOrderNo'],
-            "merchantUserNo"=> $data['merchantUserNo'],
+            "merchantUserNo"=> 'C22050231',
             'order' => json_encode($order['order']),
             'payer' => json_encode($order['payer']),
             'send_json' => $body,
-            // 'result_json' => $resp
+            'result_json' => $resp
         ]);
 
-        // $resp = json_decode($resp);
-        // return [
-        //     'response' => $resp,
-        //     'order' => $body,
-        // ];
+        $resp = json_decode($resp);
+        return [
+            'response' => $resp,
+            'order' => $body,
+        ];
 
     }
 
