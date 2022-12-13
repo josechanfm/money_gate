@@ -66,27 +66,6 @@ class PaymentController extends Controller
         return response( $response );
     }
 
-    public function getOrderId(){
-        //Default order Code 
-        $orderCode = Carbon::now()->format('ymd').'00001';
-        
-        $lastOrder = Order::latest()->first();
-
-        if( $lastOrder == null){
-            
-        }else{
-            // If the last order is created at today 
-            $isToday = Carbon::parse( $lastOrder->created_at )->isToday() ;
-
-            if( $isToday ){
-                // Last Order 是今天的, 繼承 last code
-                $orderCode = ( $lastOrder->order_code ) + 1;
-            }
-        }
-
-        return $orderCode.rand(100, 999);
-    }
-
     private function order( $data ){
 
         // Order Amount
@@ -119,7 +98,7 @@ class PaymentController extends Controller
             "order" => [
                 // order number, 訂單號, 
                 "merOrderNo"=> $data['merOrderNo'],
-                "merchantUserNo"=> 'C22050231'.rand(00000,99999),
+                "merchantUserNo"=> $data['merOrderNo'],
                 // Order 30分鐘後過期
                 "orderExceedTime" => Carbon::now()->addMinutes(60)->format("Y-m-d H:i:s"),
                 "cmmAmtMixs" => $cmmAmtMixs,
