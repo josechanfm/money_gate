@@ -118,7 +118,7 @@ class PaymentController extends Controller
             "order" => [
                 // order number, 訂單號, 
                 "merOrderNo"=> $data['merOrderNo'],
-                "merchantUserNo"=> $data['merchantUserNo'],
+                "merchantUserNo"=> $data['merOrderNo'],
                 // Order 30分鐘後過期
                 "orderExceedTime" => Carbon::now()->addMinutes(30)->format("Y-m-d H:i:s"),
                 "cmmAmtMixs" => $cmmAmtMixs,
@@ -149,6 +149,7 @@ class PaymentController extends Controller
             'amount' => $orderAmount['amount'],
             'currency' => $orderAmount['currency'],
             'merchantOrderNumber' => $data['merOrderNo'],
+            "merchantUserNo"=> $data['merchantUserNo'],
             'order' => json_encode($order['order']),
             'payer' => json_encode($order['payer']),
             'send_json' => $body,
