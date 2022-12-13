@@ -32,7 +32,8 @@ class PaymentController extends Controller
             'currency' => ['required', Rule::in(['MOP','HKD'])],
             'amountTotal' => 'required|integer|min:0',
             // Gateway 回傳這個Number, 即報名編號/繳費編號等等. 用來識別是哪一個筆費用
-            'identifyNumber' => 'required',
+            'merOrderNo' => 'required',
+            'merchantUserNo' => 'required',
             'order' => 'array',
                 'order.*.amount' => '',
                 'order.*.name' => 'required',
@@ -116,8 +117,8 @@ class PaymentController extends Controller
             ],
             "order" => [
                 // order number, 訂單號, 
-                "merOrderNo"=> $data['identifyNumber'],
-                "merchantUserNo"=> $data['identifyNumber'],
+                "merOrderNo"=> $data['merOrderNo'],
+                "merchantUserNo"=> $data['merchantUserNo'],
                 // Order 30分鐘後過期
                 "orderExceedTime" => Carbon::now()->addMinutes(30)->format("Y-m-d H:i:s"),
                 "cmmAmtMixs" => $cmmAmtMixs,
@@ -147,7 +148,7 @@ class PaymentController extends Controller
         Order::create([
             'amount' => $orderAmount['amount'],
             'currency' => $orderAmount['currency'],
-            'merchantOrderNumber' => $data['identifyNumber'],
+            'merchantOrderNumber' => $data['merOrderNo'],
             'order' => json_encode($order['order']),
             'payer' => json_encode($order['payer']),
             'send_json' => $body,
