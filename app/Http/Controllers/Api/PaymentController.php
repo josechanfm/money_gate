@@ -109,6 +109,7 @@ class PaymentController extends Controller
                 $orderAmount['amount'] += (INT) $v['amount'];
             }
         }
+        $orderAmount['amount'] = (string) $orderAmount['amount'];
 
         $order = [
             "merchantInfo" => [
@@ -118,9 +119,9 @@ class PaymentController extends Controller
             "order" => [
                 // order number, 訂單號, 
                 "merOrderNo"=> $data['merOrderNo'],
-                "merchantUserNo"=> $data['merOrderNo'],
+                "merchantUserNo"=> $data['merchantUserNo'],
                 // Order 30分鐘後過期
-                "orderExceedTime" => Carbon::now()->addMinutes(30)->format("Y-m-d H:i:s"),
+                "orderExceedTime" => Carbon::now()->addMinutes(60)->format("Y-m-d H:i:s"),
                 "cmmAmtMixs" => $cmmAmtMixs,
                 "orderAmount" => $orderAmount
             ],
