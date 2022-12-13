@@ -98,7 +98,9 @@ class PaymentController extends Controller
             "order" => [
                 // order number, 訂單號, 
                 "merOrderNo"=> $data['merOrderNo'],
-                "merchantUserNo"=> $data['merOrderNo'].rand(00000,99999),
+
+                //merchantUserNo 應該有位數限制, 12位以上, 但Luso不會顯示該錯誤信息. god damn
+                "merchantUserNo"=> $data['merOrderNo'],
                 // Order 30分鐘後過期
                 "orderExceedTime" => Carbon::now()->addMinutes(60)->format("Y-m-d H:i:s"),
                 "cmmAmtMixs" => $cmmAmtMixs,
