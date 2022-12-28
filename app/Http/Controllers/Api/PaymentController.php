@@ -127,9 +127,9 @@ class PaymentController extends Controller
 
         curl_close ($ch);
 
-        $resp = json_decode($resp);
+        $result = json_decode($resp);
         
-        $order_no = $resp->data->order->orderNo;
+        $order_no = $result->data->order->orderNo;
 
         Order::create([
             'amount' => $orderAmount['amount'],
@@ -144,7 +144,7 @@ class PaymentController extends Controller
         ]);
 
         return [
-            'response' => $resp,
+            'response' => $result,
             'order' => $body,
         ];
 

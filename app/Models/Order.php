@@ -15,6 +15,7 @@ class Order extends Model
         'currency',
         'merchantOrderNumber',
         'merchantUserNo',
+        'order_no',
         'order_number',
         'order',
         'payer',
