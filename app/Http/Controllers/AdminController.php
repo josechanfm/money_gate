@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Http;
-
+use App\Models\Order;
 
 class AdminController extends Controller
 {
@@ -13,7 +13,10 @@ class AdminController extends Controller
         $data=[
             'users'=>500,
         ];
-        return Inertia::render('Admin',compact('data'));
+
+        $orders = Order::orderBy('id','DESC')->get();
+
+        return Inertia::render('Admin',compact('data','orders'));
     }
 
     public function http_api(){

@@ -35,26 +35,33 @@ Route::middleware([
     Route::get('/dashboard', function () {
         return Inertia::render('Dashboard');
     })->name('dashboard');
-    Route::get('/admin',[AdminController::class,'index'])->name('admin');
 });
 
-Route::name('order.')->prefix('/order')->group(function () {
-    Route::resource('order', OrderController::class);
+Route::name('admin.')->prefix('admin')->group(function () {
+    
+    Route::get('/login', function () {
+        if (auth()->check()) {
+            return redirect()->route('admin.welcome');
+        }
+
+        return Inertia::render('Login');
+    })->name('login');
+
+    Route::get('/', 'AdminController@index')->name('admin');
+
+    Route::name('order.')->prefix('/order')->group(function () {
+        Route::resource('order', OrderController::class);
+    });
+    
+    Route::name('payment.')->prefix('/payment')->group(function () {
+        Route::resource('payment_crud', 'Payment\PaymentCrudController')->names('payment_crud');
+        Route::resource('payments', 'Payment\PaymentSpaController')->names('payments');
+        Route::resource('payment', 'Payment\PaymentController')->names('payment');
+        Route::post('/payments/order', 'Payment\PaymentSpaController@order')->name('payments.order');
+    });
+    
 });
 
-Route::name('payment.')->prefix('/payment')->group(function () {
-   
-    // Route::resource('payment_crud',Payment\PaymentCrudController::class);
-    // Route::resource('payments',Payment\PaymentSpaController::class);
-    // Route::resource('payment',Payment\PaymentController::class);
-    Route::resource('payment_crud', 'Payment\PaymentCrudController')->names('payment_crud');
-    Route::resource('payments', 'Payment\PaymentSpaController')->names('payments');
-    Route::resource('payment', 'Payment\PaymentController')->names('payment');
-    Route::post('/payments/order', 'Payment\PaymentSpaController@order')->name('payments.order');
-
-    // Route::post('/payments/createOrder', 'Payment\PaymentSpaController@createOrder')->name('payments.createOrder');
-
-});
 
 Route::get('api/payment/index', 'Api\PaymentController@index');
 

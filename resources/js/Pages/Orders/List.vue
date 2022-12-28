@@ -9,8 +9,8 @@
             </template>
         </template>
     </a-table>
-  </template>
-  
+</template>
+
 <script>
 import { defineComponent, ref } from 'vue';
   
@@ -36,7 +36,6 @@ export default {
     },
     setup() {
         return {
-            
             statusFilter: "",
             columns: [
                 {
@@ -45,9 +44,14 @@ export default {
                     key: 'id',
                 },
                 {
-                    title: 'Order ID',
-                    dataIndex: 'merchantOrderId',
-                    key: 'merchantOrderId',
+                    title: 'Merchant Order Number',
+                    dataIndex: 'merchantOrderNumber',
+                    key: 'merchantOrderNumber',
+                },
+                {
+                    title: 'Order Number',
+                    dataIndex: 'order_no',
+                    key: 'order_no',
                 },
                 {
                     title: 'Currency',
@@ -59,15 +63,15 @@ export default {
                     dataIndex: 'amount',
                     key: 'amount',
                 },
-                {
-                    title: 'Status',
-                    dataIndex: 'status',
-                    key: 'status',
-                },
-                {
-                    title: 'operation',
-                    dataIndex: 'operation',
-                },
+                // {
+                //     title: 'Status',
+                //     dataIndex: 'status',
+                //     key: 'status',
+                // },
+                // {
+                //     title: 'operation',
+                //     dataIndex: 'operation',
+                // },
             ],
         };
     },

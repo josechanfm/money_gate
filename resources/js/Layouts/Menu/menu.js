@@ -6,8 +6,8 @@ export default [
         children: [
             {
                 icon: 'rightOutlined',
-                key: 'order.order',
-                route: 'order.order.index',
+                key: 'admin.order.order',
+                route: 'admin.order.order.index',
                 title: 'List',
                 permission: 'order.view',
             },
@@ -20,15 +20,15 @@ export default [
         children: [
             {
                 icon: 'rightOutlined',
-                key: 'payment.payment',
-                route: 'payment.payment.index',
+                key: 'admin.payment.payment',
+                route: 'admin.payment.payment.index',
                 title: 'Payment',
                 permission: 'payment.view',
             },
             {
                 icon: 'rightOutlined',
-                key: 'payment.payments',
-                route: 'payment.payments.index',
+                key: 'admin.payment.payments',
+                route: 'admin.payment.payments.index',
                 title: 'Payments',
                 permission: 'payments.view',
             },
