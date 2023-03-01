@@ -22,7 +22,7 @@ class PaymentController extends Controller
         $this->merchant_id = config('payment.luso.merchant_id');
         $this->public_key = config('payment.luso.public_key');
 
-        $this->host = 'https://aopuat.lusobank.com.mo/';
+        $this->host = 'https://aop.lusobank.com.mo/';
     }
     
 
@@ -127,9 +127,12 @@ class PaymentController extends Controller
 
         curl_close ($ch);
 
-        return json_decode($resp);  
-
         $result = json_decode($resp);
+
+        // 如果 response 是 error 的話
+        // if($result->code == ''){
+
+        // }
         
         $order_no = $result->data->order->orderNo;
 
