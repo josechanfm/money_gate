@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Http\Controllers\AccessTokenController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\Payment\PaymentController;
 use App\Http\Controllers\Order\OrderController;
 use App\Models\User;
@@ -29,16 +30,16 @@ use App\Models\User;
 //     ]);
 // });
 
-// Route::middleware([
-//     'auth:sanctum',
-//     config('jetstream.auth_session'),
-//     'verified',
-// ])->group(function () {
-//     Route::get('/dashboard', function () {
-//         return Inertia::render('Dashboard');
-//     })->name('dashboard');
+Route::middleware([
+    'auth:sanctum',
+    config('jetstream.auth_session'),
+    'verified',
+])->group(function () {
+    Route::get('/dashboard', function () {
+        return Inertia::render('Dashboard');
+    })->name('dashboard');
     
-// });
+});
 
 
 Route::get('api/payment/index', 'Api\PaymentController@index');
@@ -53,24 +54,38 @@ Route::get('payment/table_list',[PaymentController::class,'table_list']);
 Route::get('payment/newPayment', 'Payment\PaymentController@newPayment')->name('payments.new-payment');
 
 
-Route::get('/login', 'Api\PaymentController@index');
+Route::get('/login', function () {
+    if (auth()->check()) {
+        return redirect('/admin');
+    }
 
-Route::group(['middleware' => ['role:Admin|Master']], function () {
-    
-    Route::name('admin.')->prefix('admin')->group(function () {
-    
+    return Inertia::render('Login');
+})->name('login');
+
+Route::get('/', function () {
+        return redirect('/login');
+});
+
+Route::group([
+    'prefix'=>'admin',
+    'as' => 'admin.',
+    'middleware' => [
+        'role:Admin|Master',
+        'auth:sanctum',
+        config('jetstream.auth_session'),
+        'verified',
+    ],
+], function () {
+        Route::resource('user',UserController::class);
         Route::get('/', 'AdminController@index')->name('admin');
+        Route::resource('order', OrderController::class);
 
-        Route::name('order.')->prefix('/order')->group(function () {
-            Route::resource('order', OrderController::class);
-        });
-        
         Route::name('payment.')->prefix('/payment')->group(function () {
             Route::resource('payment_crud', 'Payment\PaymentCrudController')->names('payment_crud');
             Route::resource('payments', 'Payment\PaymentSpaController')->names('payments');
             Route::resource('payment', 'Payment\PaymentController')->names('payment');
             Route::post('/payments/order', 'Payment\PaymentSpaController@order')->name('payments.order');
-        });
+        }); 
         
-    });
+
 });

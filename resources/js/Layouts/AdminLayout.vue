@@ -19,9 +19,9 @@
             </a-layout-content>
 
             <!-- footer -->
-            <a-layout-footer style="text-align: center">
+            <!-- <a-layout-footer style="text-align: center">
                 Hubis
-            </a-layout-footer>
+            </a-layout-footer> -->
         </a-layout>
     </a-layout>
 </template>

@@ -46,9 +46,9 @@ export default {
             return {
                 ...this.menuInfo,
                 children: this.menuInfo.children,
-                // children: this.menuInfo.children.filter(item => {
-                //     return !item.permission || permissions.includes(item.permission)
-                // }),
+                children: this.menuInfo.children.filter(item => {
+                    return !item.permission || permissions.includes(item.permission)
+                }),
             }
         },
     },

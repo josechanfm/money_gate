@@ -16,7 +16,7 @@
         <link rel="stylesheet" href="dist/css/app.css" />
         <script src="dist/js/anigma_app.js"></script>
     </head>
-    <body class="py-5 md:py-0">
+    <body class="p-0">
         @inertia
     </body>
    

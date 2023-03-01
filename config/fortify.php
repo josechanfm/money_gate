@@ -118,7 +118,7 @@ return [
     |
     */
 
-    'views' => true,
+    'views' => false,
 
     /*
     |--------------------------------------------------------------------------
@@ -132,8 +132,8 @@ return [
     */
 
     'features' => [
-        // Features::registration(),
-        // Features::resetPasswords(),
+        Features::registration(),
+        Features::resetPasswords(),
         // Features::emailVerification(),
         Features::updateProfileInformation(),
         Features::updatePasswords(),

@@ -20,7 +20,7 @@ const columns = [
         title: 'Amount',
         dataIndex: 'amount',
         key: 'amount',
-    },
+    }
 ]
 </script>
 
@@ -35,7 +35,14 @@ const columns = [
         <div class="grid grid-cols-3 gap-2">
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg px-4 py-4">
                 <h3 class="text-2xl font-bold dark:text-black py-2">Order</h3>
-                <a-table :dataSource="orders" :columns="columns" />
+                <a-table :dataSource="orders" :columns="columns">
+
+                    <!-- <template #bodyCell="{ column, record }">
+                        <template v-if="column.key === 'order_no'">
+                            test
+                        </template>
+                    </template> -->
+                </a-table>
             </div>
         </div>
 

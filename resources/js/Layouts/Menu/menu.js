@@ -6,10 +6,10 @@ export default [
         children: [
             {
                 icon: 'rightOutlined',
-                key: 'admin.order.order',
-                route: 'admin.order.order.index',
+                key: 'admin.order',
+                route: 'admin.order.index',
                 title: 'List',
-                permission: 'order.view',
+                permission: 'admin.order.order',
             },
         ]
     },
@@ -23,64 +23,36 @@ export default [
                 key: 'admin.payment.payment',
                 route: 'admin.payment.payment.index',
                 title: 'Payment',
-                permission: 'payment.view',
+                permission: 'admin.payment.payment',
             },
             {
                 icon: 'rightOutlined',
                 key: 'admin.payment.payments',
                 route: 'admin.payment.payments.index',
                 title: 'Payments',
-                permission: 'payments.view',
+                permission: 'admin.payment.payment',
             },
-            // {
-            //     icon: 'ApartmentOutlined',
-            //     key: 'admin.system.roles',
-            //     route: 'admin.system.roles.index',
-            //     title: 'layout.menu.roles',
-            //     permission: 'admin.system.roles.view',
-            // },
-            // {
-            //     icon: 'DatabaseOutlined',
-            //     key: 'admin.system.logs',
-            //     route: 'admin.system.logs.index',
-            //     title: 'layout.menu.logs',
-            //     permission: 'admin.system.logs',
-            // }
         ]
     },
-    // {
-    //     key: 'admin.admin',
-    //     icon: 'BuildOutlined',
-    //     title: 'layout.menu.admin',
-    //     children: [
-    //         {
-    //             icon: 'UserOutlined',
-    //             route: 'admin.admin.bulletins.index',
-    //             key: 'admin.admin.bulletins',
-    //             title: 'layout.menu.bulletins',
-    //             permission: 'admin.system.users.view',
-    //         }
-    //     ]
-    // },
-    // {
-    //     key: 'admin.developer',
-    //     icon: 'CodeOutlined',
-    //     title: 'layout.menu.developer',
-    //     children: [
-    //         {
-    //             icon: 'NodeIndexOutlined',
-    //             key: 'admin.developer.routes',
-    //             route: 'admin.developer.routes',
-    //             title: 'layout.menu.route',
-    //             permission: 'admin.developer.route',
-    //         },
-    //         {
-    //             icon: 'ThunderboltOutlined',
-    //             key: 'admin.developer.misc',
-    //             route: 'admin.developer.misc',
-    //             title: 'layout.menu.misc',
-    //             permission: 'admin.developer.misc',
-    //         }
-    //     ]
-    // }
+    {
+        key: 'user',
+        icon: 'UserOutlined',
+        title: 'User',
+        children: [
+            {
+                icon: 'rightOutlined',
+                key: 'admin.user',
+                route: 'admin.user.index',
+                title: 'List',
+                permission: 'admin.user',
+            },
+            {
+                icon: 'rightOutlined',
+                key: 'admin.user.create',
+                route: 'admin.user.create',
+                title: 'Create',
+                permission: 'admin.user',
+            },
+        ]
+    },
 ]
