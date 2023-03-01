@@ -127,6 +127,8 @@ class PaymentController extends Controller
 
         curl_close ($ch);
 
+        return json_decode($resp);  
+
         $result = json_decode($resp);
         
         $order_no = $result->data->order->orderNo;
